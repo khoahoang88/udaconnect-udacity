@@ -1,0 +1,72 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: location-add
+  name: location-add
+spec:
+  ports:
+  - name: "9092"
+    port: 9092
+    targetPort: 9092
+  selector:
+    service: location-add
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: location-add
+  name: location-add
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: location-add
+  template:
+    metadata:
+      labels:
+        service: location-add
+    spec:
+      containers:
+      - image: 0906784480/location-add:latest
+        name: location-add
+        imagePullPolicy: Always
+        env:
+        - name: DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: db-connections-map
+              key: DB_USERNAME
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-connections-secret
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: db-connections-map
+              key: DB_NAME
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: db-connections-map
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: db-connections-map
+              key: DB_PORT
+        - name: KAFKA_URL
+          valueFrom:
+            configMapKeyRef:
+              name: location-add-map
+              key: KAFKA_URL
+        - name: KAFKA_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              name: location-add-map
+              key: KAFKA_TOPIC
+      restartPolicy: Always

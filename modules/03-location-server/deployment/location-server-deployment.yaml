@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: location-server
+  name: location-server-svc
+spec:
+  ports:
+  - name: "5005"
+    port: 5005
+    targetPort: 5005
+    nodePort: 30003
+  selector:
+    service: location-server
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: location-server
+  name: location-server-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: location-server
+  template:
+    metadata:
+      labels:
+        service: location-server
+    spec:
+      containers:
+      - image: 0906784480/location-server:latest
+        name: location-server
+        imagePullPolicy: Always
+        env:
+        - name: KAFKA_URL
+          valueFrom:
+            configMapKeyRef:
+              name: location-server-map
+              key: KAFKA_URL
+        - name: KAFKA_TOPIC
+          valueFrom:
+            configMapKeyRef:
+              name: location-server-map
+              key: KAFKA_TOPIC
+      restartPolicy: Always

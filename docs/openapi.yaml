@@ -1,0 +1,105 @@
+---
+openapi: 3.0.1
+info:
+  title: UdaConnect
+  description: UdaConnect description
+  version: "0.1"
+servers:
+- url: http://192.168.56.10:30001
+paths:
+  /api/persons:
+    get:
+      description: Get List of Persons
+      responses:
+        "200":
+          description: Success response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+              examples:
+                "data":
+                  value: |
+                    [{"last_name": "Fargo", "company_name": "Alpha Omega Upholstery", "id": 5, "first_name": "Taco"}, {"last_name": "Shader", "company_name": "USDA", "id": 6, "first_name": "Frank"}, {"last_name": "Trexler", "company_name": "Hampton, Hampton and McQuill", "id": 1, "first_name": "Pam"}}]
+      servers:
+      - url: http://192.168.56.10:30001
+    post:
+      tags:
+      - creates a new person
+      summary: creates a new person record
+      description: |
+        By passing the correct payload, you can create a
+        new person/user to the system
+      operationId: createPerson
+      requestBody:
+        description: Optional description in *Markdown*
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  first_name:
+                    type: string
+                    example: Khoa
+                  last_name:
+                    type: string
+                    example: Hoang
+                  company_name:
+                    type: string
+                    example: Uda
+      responses:
+        "201":
+          description: create new person
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 99
+        "400":
+          description: bad input parameter
+    servers:
+    - url: http://192.168.56.10:30001
+  /api/persons/{id}/connection:
+    get:
+      description: Get person connection by ID
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 5
+      - name: start_date
+        in: query
+        required: false
+        style: form
+        schema:
+          type: string
+        example: 2022-11-11
+      - name: end_date
+        in: query
+        required: false
+        style: form
+        schema:
+          type: string
+        example: 2022-11-11
+      - name: distance
+        in: query
+        required: false
+        style: form
+        schema:
+          type: integer
+        example: 7
+      responses:
+        "200":
+          description: Success response
+      servers:
+      - url: http://192.168.56.10:30001
+    servers:
+    - url: http://192.168.56.10:30001
+components: {}

@@ -1,0 +1,24 @@
+KAFKA install:
+$ helm repo add bitnami https://charts.bitnami.com/bitnami
+$ helm install kafka-release bitnami/kafka
+
+PERSON-SERVICE
+Go to modules/01-person-service
+$ kubectl apply -f deployment/
+$ sh scripts/run_db_command.sh
+
+CONNECTION-SERVICE
+Go to modules/02-connection-service
+$ kubectl apply -f deployment/
+$ sh scripts/run_db_command.sh
+
+LOCATION-SERVER
+Go to modules/03-location-server
+$ kubectl apply -f deployment/
+
+LOCATION-add
+Go to modules/04-location-add
+$ kubectl apply -f deployment/
+
+FRONTEND
+$ kubectl apply -f deployment/

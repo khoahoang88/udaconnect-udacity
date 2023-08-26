@@ -1,0 +1,15 @@
+Person-service, Connection-service is implemented with REST communication because:
+ - It does not handle a large volume of concurrent requests
+ - Its simple to implement REST
+ - The data is more complex (Person information)
+
+Location service includes two microservices: location-server and location-add.
+Location-server is a grpc-server and Location-add is a queue consumer.
+Location-server is implemented with GRPC communication because:
+ - The coordinates will be updated in realtime (faster API)
+ - Handle multiple requests simultaneously
+ - Simple data and data is hardly changed frequently
+
+Location-add is implement with Queue communication.
+The coordinates data will be sent in a huge volume while DB cannot handle a large amount of  requests.
+

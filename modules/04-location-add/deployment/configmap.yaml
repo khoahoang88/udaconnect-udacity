@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  KAFKA_URL: kafka-release-0.kafka-release-headless.default.svc.cluster.local:9092
+  KAFKA_TOPIC: test
+  DB_USERNAME: "ct_admin"
+  DB_NAME: "geoconnections"
+  DB_HOST: "postgres-geoconnections"
+  DB_PORT: "5432"
+metadata:
+  name: location-add-map
